@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import vn.mran.xd1.util.Preferences;
 import vn.mran.xd1.util.ScreenUtil;
 
 /**
@@ -13,6 +14,7 @@ import vn.mran.xd1.util.ScreenUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected float screenWidth;
+    protected Preferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void initBaseValue() {
         screenWidth = ScreenUtil.getScreenWidth(getWindowManager());
+        preferences = new Preferences(getApplicationContext());
     }
 
     public abstract void initLayout();

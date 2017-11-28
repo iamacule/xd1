@@ -1,33 +1,36 @@
 package vn.mran.xd1;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import vn.mran.xd1.activity.ChooserActivity;
+import vn.mran.xd1.base.BaseActivity;
+import vn.mran.xd1.constant.PrefValue;
+import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.util.MyAnimation;
-import vn.mran.xd1.util.ScreenUtil;
 import vn.mran.xd1.widget.CustomTextView;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     private final String TAG = getClass().getSimpleName();
     private final Handler handler = new Handler();
     private CustomTextView txtTitle;
     private LinearLayout lnMain;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.activity_main);
+    public void initLayout() {
         txtTitle = findViewById(R.id.txtTitle);
-        lnMain = (LinearLayout)findViewById(R.id.lnMain);
+        lnMain = (LinearLayout) findViewById(R.id.lnMain);
+    }
+
+    @Override
+    public void initValue() {
+
+    }
+
+    @Override
+    public void initAction() {
         txtTitle.startAnimation(MyAnimation.fadeIn(this));
         handler.postDelayed(new Runnable() {
             @Override
@@ -36,7 +39,9 @@ public class SplashActivity extends AppCompatActivity {
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-
+                        if (preferences.getBooleanValue(PrefValue.SETTING_SOUND, true)) {
+                            Media.playBackgroundMusic(getApplicationContext());
+                        }
                     }
 
                     @Override
@@ -55,5 +60,10 @@ public class SplashActivity extends AppCompatActivity {
                 lnMain.startAnimation(animation);
             }
         }, 1500);
+    }
+
+    @Override
+    public int setLayout() {
+        return R.layout.activity_main;
     }
 }

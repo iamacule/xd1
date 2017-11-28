@@ -5,11 +5,15 @@ package vn.mran.xd1.helper;
  */
 
 public class Log {
+    private static boolean enableLog = true;
+
     public static void d(String tag, String message) {
-        android.util.Log.d(tag, message);
+        if (enableLog)
+            android.util.Log.d(tag, message);
     }
 
     public static void e(String tag, String message) {
-        android.util.Log.e(tag, message);
+        if (enableLog)
+            android.util.Log.e(tag, message);
     }
 }
