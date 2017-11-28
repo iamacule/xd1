@@ -1,0 +1,42 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+
+    <ImageView
+        android:id="@+id/imgPlate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <vn.mran.xd1.draw.DrawBattle
+            android:id="@+id/drawBattle"
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:id="@+id/lnBottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="asdasdasd"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

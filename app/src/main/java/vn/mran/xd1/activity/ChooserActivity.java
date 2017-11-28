@@ -103,7 +103,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.imgBattle:
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(BattleActivity.class);
                 break;
             case R.id.imgSetting:
                 startActivity(SettingActivity.class);

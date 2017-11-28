@@ -57,7 +57,7 @@ public class SettingActivity extends BaseActivity {
         togShake.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+                preferences.storeValue(PrefValue.SETTING_SHAKE, b);
             }
         });
     }
