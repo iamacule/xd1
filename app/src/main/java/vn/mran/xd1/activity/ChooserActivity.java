@@ -1,10 +1,7 @@
 package vn.mran.xd1.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,9 +28,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     private ImageView imgRanking;
     private LinearLayout lnChoose;
     private LinearLayout lnImgSplash;
-    private float screenWidth;
     private final Activity chooserActivity = this;
-    private Intent intent;
 
     @Override
     public void initLayout() {
@@ -48,7 +43,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initValue() {
-        screenWidth = ScreenUtil.getScreenWidth(getWindowManager());
         TouchEffect.addAlpha(imgPlay);
         TouchEffect.addAlpha(imgBattle);
         TouchEffect.addAlpha(imgSetting);
@@ -112,7 +106,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.imgSetting:
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(SettingActivity.class);
                 break;
             case R.id.imgRanking:
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

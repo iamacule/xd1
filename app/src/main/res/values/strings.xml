@@ -4,4 +4,6 @@
     <string name="battle">Đấu</string>
     <string name="setting">Cài đặt</string>
     <string name="ranking">Xếp hạng</string>
+    <string name="sound">Âm thanh</string>
+    <string name="shake_roll">Lắc và Rê</string>
 </resources>
