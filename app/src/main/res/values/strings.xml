@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">XD1</string>
+    <string name="app_name">Xốc đĩa 3D 2018</string>
+    <string name="play_now">Chơi ngay</string>
+    <string name="battle">Đấu</string>
+    <string name="setting">Cài đặt</string>
+    <string name="ranking">Xếp hạng</string>
 </resources>
