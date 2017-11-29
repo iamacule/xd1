@@ -23,21 +23,20 @@ public class DrawBattle extends View {
 
     public interface OnDrawBattleUpdate {
         void onTouch();
-        void onOpenLid();
+
+        void onLidChanged(boolean isOpened);
     }
 
     private final String TAG = getClass().getSimpleName();
 
     private OnDrawBattleUpdate onDrawBattleUpdate;
-
-    private Context context;
     private Bitmap lid;
     private Rect rectLid;
     private int width;
     private int height;
 
     private Point midPoint;
-    private boolean isOpen = false;
+    private boolean isLidOpened = false;
 
     public DrawBattle(Context context) {
         super(context);
@@ -54,7 +53,6 @@ public class DrawBattle extends View {
     }
 
     private void init(Context context) {
-        this.context = context;
         lid = BitmapFactory.decodeResource(context.getResources(), R.drawable.lid);
     }
 
@@ -82,26 +80,22 @@ public class DrawBattle extends View {
                 onDrawBattleUpdate.onTouch();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (event.getX() > midPoint.x - lid.getWidth() / 2 &&
-                        event.getX() < midPoint.x + lid.getWidth() / 2 &&
-                        event.getY() > midPoint.y - lid.getHeight() / 2 &&
-                        event.getY() < midPoint.y + lid.getHeight() / 2) {
-                    Log.d(TAG, "Move : x,y = " + event.getX());
+                if (isTouchOnLid(event.getX(), event.getY())) {
                     midPoint.x = (int) event.getX();
                     midPoint.y = (int) event.getY();
                     invalidate();
-
-                    if (midPoint.x > width / 2 + (lid.getWidth() / 2) ||
-                            midPoint.x < width / 2 - (lid.getWidth() / 2) ||
-                            midPoint.y > height / 2 + (lid.getHeight() / 2) ||
-                            midPoint.y < height / 2 - (lid.getWidth() / 2) ) {
-                        if (!isOpen){
-                            isOpen = true;
-                            Log.d(TAG,"OPEN");
-                            onDrawBattleUpdate.onOpenLid();
+                    if (isLidOutOfPlate(event.getX(), event.getY())) {
+                        if (!isLidOpened) {
+                            Log.d(TAG, "Lid Open");
+                            isLidOpened = true;
+                            onDrawBattleUpdate.onLidChanged(isLidOpened);
                         }
-                    }else {
-                        isOpen = false;
+                    } else {
+                        if (isLidOpened) {
+                            Log.d(TAG, "Lid Close");
+                            isLidOpened = false;
+                            onDrawBattleUpdate.onLidChanged(isLidOpened);
+                        }
                     }
                 }
                 break;
@@ -111,5 +105,19 @@ public class DrawBattle extends View {
                 break;
         }
         return true;
+    }
+
+    private boolean isLidOutOfPlate(float x, float y) {
+        return x > (width / 2) + (lid.getWidth() / 12) ||
+                x < (width / 2) - (lid.getWidth() / 12) ||
+                y > (height / 2) + (lid.getHeight() / 12) ||
+                y < (height / 2) - (lid.getHeight() / 12);
+    }
+
+    private boolean isTouchOnLid(float x, float y) {
+        return x > midPoint.x - lid.getWidth() / 2 &&
+                x < midPoint.x + lid.getWidth() / 2 &&
+                y > midPoint.y - lid.getHeight() / 2 &&
+                y < midPoint.y + lid.getHeight() / 2;
     }
 }

@@ -16,6 +16,7 @@ public class Rules {
 
     private static Rules instance;
     private Preferences preferences;
+    private boolean isNewResult = false;
 
     private String currentRule;
     private int numberOfRule;
@@ -37,7 +38,7 @@ public class Rules {
 
     public boolean getResult() {
         if (numberOfRule > 0) {
-            numberOfRule--;
+            isNewResult = true;
             switch (currentRule) {
                 case PrefValue.RULE_1:
                     return getRule1();
@@ -46,6 +47,16 @@ public class Rules {
             }
         } else
             return randomBoolean();
+    }
+
+    public void minusNumOfRule() {
+        if (numberOfRule > 0) {
+            if (isNewResult) {
+                isNewResult = false;
+                numberOfRule = numberOfRule - 1;
+                Log.d(TAG, "Number of rules : " + numberOfRule);
+            }
+        }
     }
 
     /**
@@ -86,5 +97,9 @@ public class Rules {
 
     public boolean randomBoolean() {
         return Math.random() < 0.5;
+    }
+
+    public void setNewResult(boolean newResult) {
+        isNewResult = newResult;
     }
 }

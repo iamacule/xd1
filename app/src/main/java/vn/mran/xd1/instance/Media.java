@@ -4,10 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import java.io.IOException;
-
 import vn.mran.xd1.R;
-import vn.mran.xd1.helper.Log;
 
 /**
  * Created by Mr An on 28/11/2017.
@@ -15,6 +12,7 @@ import vn.mran.xd1.helper.Log;
 
 public class Media {
     public static MediaPlayer mediaPlayer;
+    public static MediaPlayer shakePlayer;
 
     private static String TAG = "Media";
 
@@ -33,5 +31,26 @@ public class Media {
             mediaPlayer.stop();
             mediaPlayer = null;
         }
+    }
+
+    public static void stopShortSound() {
+        if (shakePlayer != null) {
+            shakePlayer.release();
+            shakePlayer = null;
+        }
+    }
+
+    public static void playShortSound(Context c, int id) {
+        stopShortSound();
+
+        shakePlayer = MediaPlayer.create(c, id);
+        shakePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                stopShortSound();
+            }
+        });
+
+        shakePlayer.start();
     }
 }

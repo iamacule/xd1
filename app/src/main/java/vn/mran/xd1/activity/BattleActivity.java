@@ -10,6 +10,7 @@ import vn.mran.xd1.base.BaseActivity;
 import vn.mran.xd1.constant.PrefValue;
 import vn.mran.xd1.draw.DrawBattle;
 import vn.mran.xd1.helper.Log;
+import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.instance.Rules;
 import vn.mran.xd1.mvp.presenter.BattlePresenter;
 import vn.mran.xd1.mvp.view.BattleView;
@@ -34,6 +35,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
     private BattlePresenter presenter;
     private boolean isShake;
+    private boolean result;
     private Bitmap bpStar;
     private Bitmap bpUp;
     private Bitmap bpDown;
@@ -57,6 +59,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         drawBattle.setOnDrawBattleUpdate(this);
 
         isShake = preferences.getBooleanValue(PrefValue.SETTING_SHAKE, true);
+        presenter.setMode(isShake);
         if (isShake) {
             findViewById(R.id.lnBottom).setVisibility(View.GONE);
             Bitmap plate = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.plate), screenHeight * 9 / 10);
@@ -72,6 +75,9 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         bpUp = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.up), screenWidth / 10);
         bpDown = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.down), screenWidth / 10);
         imgStarChan.setImageBitmap(bpStar);
+        imgStarLe.setImageBitmap(bpStar);
+        imgStarChan.setVisibility(View.GONE);
+        imgStarLe.setVisibility(View.GONE);
         imgV1.setImageBitmap(bpUp);
         imgV2.setImageBitmap(bpDown);
         imgV3.setImageBitmap(bpUp);
@@ -100,13 +106,27 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     }
 
     @Override
-    public void onOpenLid() {
-        presenter.getResult();
+    public void onLidChanged(boolean isOpened) {
+        Media.playShortSound(getApplicationContext(), R.raw.open_close);
+        if (isOpened) {
+            Rules.getInstance().minusNumOfRule();
+            presenter.setShakeEnable(false);
+            if (result) {
+                imgStarChan.setVisibility(View.VISIBLE);
+                imgStarLe.setVisibility(View.GONE);
+            } else {
+                imgStarChan.setVisibility(View.GONE);
+                imgStarLe.setVisibility(View.VISIBLE);
+            }
+        } else {
+            presenter.setShakeEnable(true);
+        }
     }
 
     @Override
-    public void setImage(boolean[] imageRuleArrays) {
+    public void setImage(boolean[] imageRuleArrays, boolean result) {
         Rules.getInstance().setResultArrays(imageRuleArrays);
+        this.result = result;
 
         if (imageRuleArrays[0]) {
             imgV1.setImageBitmap(bpUp);
