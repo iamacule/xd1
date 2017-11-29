@@ -8,7 +8,9 @@ import android.widget.LinearLayout;
 import vn.mran.xd1.activity.ChooserActivity;
 import vn.mran.xd1.base.BaseActivity;
 import vn.mran.xd1.constant.PrefValue;
+import vn.mran.xd1.helper.Log;
 import vn.mran.xd1.instance.Media;
+import vn.mran.xd1.instance.Rules;
 import vn.mran.xd1.util.MyAnimation;
 import vn.mran.xd1.widget.CustomTextView;
 
@@ -26,7 +28,8 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initValue() {
-
+//        Log.d(TAG,"Test : "+true + true);
+        Rules.init(getApplicationContext());
     }
 
     @Override

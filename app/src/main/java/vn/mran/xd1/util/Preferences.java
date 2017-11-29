@@ -50,7 +50,15 @@ public final class Preferences {
         return pref.getString(key, "");
     }
 
+    public String getStringValue(String key,String defaultValue) {
+        return pref.getString(key, defaultValue);
+    }
+
     public int getIntValue(String key){
         return pref.getInt(key,-1);
+    }
+
+    public int getIntValue(String key,int defaultValue){
+        return pref.getInt(key,defaultValue);
     }
 }

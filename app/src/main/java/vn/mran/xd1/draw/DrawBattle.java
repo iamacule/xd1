@@ -20,7 +20,16 @@ import vn.mran.xd1.util.ResizeBitmap;
  */
 
 public class DrawBattle extends View {
+
+    public interface OnDrawBattleUpdate {
+        void onTouch();
+        void onOpenLid();
+    }
+
     private final String TAG = getClass().getSimpleName();
+
+    private OnDrawBattleUpdate onDrawBattleUpdate;
+
     private Context context;
     private Bitmap lid;
     private Rect rectLid;
@@ -28,6 +37,7 @@ public class DrawBattle extends View {
     private int height;
 
     private Point midPoint;
+    private boolean isOpen = false;
 
     public DrawBattle(Context context) {
         super(context);
@@ -39,24 +49,22 @@ public class DrawBattle extends View {
         init(context);
     }
 
+    public void setOnDrawBattleUpdate(OnDrawBattleUpdate onDrawBattleUpdate) {
+        this.onDrawBattleUpdate = onDrawBattleUpdate;
+    }
+
     private void init(Context context) {
         this.context = context;
         lid = BitmapFactory.decodeResource(context.getResources(), R.drawable.lid);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        Log.d(TAG, "onSizeChanged");
-        width = w;
-        height = h;
-        midPoint = new Point(width / 2, height / 2);
-        invalidate();
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
-
+        if (midPoint == null) {
+            width = canvas.getWidth();
+            height = canvas.getHeight();
+            midPoint = new Point(width / 2, height / 2);
+        }
         //Draw
         rectLid = new Rect(midPoint.x - lid.getWidth() / 2, midPoint.y - lid.getHeight() / 2, midPoint.x + lid.getWidth() / 2, midPoint.y + lid.getHeight() / 2);
         canvas.drawBitmap(lid, null, rectLid, null);
@@ -64,25 +72,39 @@ public class DrawBattle extends View {
 
     public void setLidSize(int w) {
         lid = ResizeBitmap.resize(lid, w);
+        invalidate();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
+                onDrawBattleUpdate.onTouch();
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (event.getX() > midPoint.x - lid.getWidth() / 2 &&
                         event.getX() < midPoint.x + lid.getWidth() / 2 &&
                         event.getY() > midPoint.y - lid.getHeight() / 2 &&
-                        event.getY() < midPoint.y + lid.getHeight() / 2){
-                    Log.d(TAG,"Move : x,y = "+event.getX());
+                        event.getY() < midPoint.y + lid.getHeight() / 2) {
+                    Log.d(TAG, "Move : x,y = " + event.getX());
                     midPoint.x = (int) event.getX();
                     midPoint.y = (int) event.getY();
                     invalidate();
+
+                    if (midPoint.x > width / 2 + (lid.getWidth() / 2) ||
+                            midPoint.x < width / 2 - (lid.getWidth() / 2) ||
+                            midPoint.y > height / 2 + (lid.getHeight() / 2) ||
+                            midPoint.y < height / 2 - (lid.getWidth() / 2) ) {
+                        if (!isOpen){
+                            isOpen = true;
+                            Log.d(TAG,"OPEN");
+                            onDrawBattleUpdate.onOpenLid();
+                        }
+                    }else {
+                        isOpen = false;
+                    }
                 }
-                    break;
+                break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
 

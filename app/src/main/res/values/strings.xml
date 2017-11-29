@@ -6,4 +6,6 @@
     <string name="ranking">Xếp hạng</string>
     <string name="sound">Âm thanh</string>
     <string name="shake_roll">Lắc và Rê</string>
+    <string name="chan">Chẵn</string>
+    <string name="le">Lẽ</string>
 </resources>
