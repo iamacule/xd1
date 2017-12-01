@@ -6,4 +6,5 @@
 
     <dimen name="setting_element_margin">5dp</dimen>
     <dimen name="setting_first_element_top_margin">20dp</dimen>
+    <dimen name="icon_button_margin">10dp</dimen>
 </resources>

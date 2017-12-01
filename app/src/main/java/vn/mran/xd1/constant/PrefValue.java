@@ -6,7 +6,6 @@ package vn.mran.xd1.constant;
 
 public interface PrefValue {
     String SETTING_SOUND = "SETTING_SOUND";
-    String SETTING_SHAKE = "SETTING_SHAKE";
 
     String RULE = "RULE";
 

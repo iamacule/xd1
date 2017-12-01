@@ -15,31 +15,33 @@ import vn.mran.xd1.util.Task;
 
 public class SettingActivity extends BaseActivity {
     private ToggleButton togSound;
-    private ToggleButton togShake;
 
     private boolean playSound;
     private Runnable togSoundRunnable = new Runnable() {
         @Override
         public void run() {
-            if (playSound) {
-                Media.playBackgroundMusic(getApplicationContext());
-            } else {
-                Media.stopBackgroundMusic();
-            }
+            Task.startNewBackGroundThread(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (playSound) {
+                        Media.playBackgroundMusic(getApplicationContext());
+                    } else {
+                        Media.stopBackgroundMusic();
+                    }
+                }
+            }));
         }
     };
 
     @Override
     public void initLayout() {
         togSound = findViewById(R.id.togSound);
-        togShake = findViewById(R.id.togShake);
     }
 
     @Override
     public void initValue() {
         playSound = preferences.getBooleanValue(PrefValue.SETTING_SOUND, true);
         togSound.setChecked(playSound);
-        togShake.setChecked(preferences.getBooleanValue(PrefValue.SETTING_SHAKE, true));
     }
 
     @Override
@@ -51,13 +53,6 @@ public class SettingActivity extends BaseActivity {
                 playSound = b;
                 Task.removeCallBack(togSoundRunnable);
                 Task.postDelay(togSoundRunnable,500);
-            }
-        });
-
-        togShake.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.storeValue(PrefValue.SETTING_SHAKE, b);
             }
         });
     }

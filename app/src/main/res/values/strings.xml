@@ -8,4 +8,11 @@
     <string name="shake_roll">Lắc và Rê</string>
     <string name="chan">Chẵn</string>
     <string name="le">Lẽ</string>
+    <string name="open">Mở</string>
+    <string name="close">Đóng</string>
+    <string name="shake">Xốc</string>
+    
+    //ID ADS MOB
+    <string name="unit_id">ca-app-pub-8948000940234659/8892728064</string>
+    <string name="unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

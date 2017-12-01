@@ -10,6 +10,7 @@ import android.os.Handler;
 
 public class Task {
     private static Thread backgroundThread;
+    private static Thread aliveThread;
     private static Handler handler = new Handler();
 
     /**
@@ -25,6 +26,21 @@ public class Task {
         }
         backgroundThread = new Thread(runnable);
         backgroundThread.start();
+    }
+
+    /**
+     * Background Thread for doing hard task, for make an UI smoothly
+     */
+    public static void startAliveBackGroundThread(final Runnable runnable) {
+        if (aliveThread != null) {
+            if (!aliveThread.isAlive()) {
+                aliveThread = new Thread(runnable);
+                aliveThread.start();
+            }
+        }else {
+            aliveThread = new Thread(runnable);
+            aliveThread.start();
+        }
     }
 
     /**

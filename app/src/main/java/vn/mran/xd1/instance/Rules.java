@@ -98,8 +98,4 @@ public class Rules {
     public boolean randomBoolean() {
         return Math.random() < 0.5;
     }
-
-    public void setNewResult(boolean newResult) {
-        isNewResult = newResult;
-    }
 }

@@ -50,4 +50,7 @@ public class MyAnimation {
     public static Animation fadeIn(Activity activity){
         return AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_in_long);
     }
+    public static Animation shake(Activity activity){
+        return AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.shake);
+    }
 }
