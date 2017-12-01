@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import vn.mran.xd1.R;
 import vn.mran.xd1.base.BaseActivity;
+import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.util.EventUtil;
 import vn.mran.xd1.util.MyAnimation;
 import vn.mran.xd1.util.ResizeBitmap;
@@ -25,7 +26,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     private ImageView imgBattle;
     private ImageView imgSetting;
     private ImageView imgFlower;
-    private ImageView imgRanking;
+    private ImageView imgExit;
     private LinearLayout lnChoose;
     private LinearLayout lnImgSplash;
     private final Activity chooserActivity = this;
@@ -35,7 +36,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
         imgBattle = (ImageView) findViewById(R.id.imgBattle);
         imgSetting = (ImageView) findViewById(R.id.imgSetting);
-        imgRanking = (ImageView) findViewById(R.id.imgRanking);
+        imgExit = (ImageView) findViewById(R.id.imgExit);
         imgFlower = (ImageView) findViewById(R.id.imgFlower);
         lnChoose = (LinearLayout) findViewById(R.id.lnChoose);
         lnImgSplash = (LinearLayout) findViewById(R.id.lnImgSplash);
@@ -46,7 +47,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         TouchEffect.addAlpha(imgPlay);
         TouchEffect.addAlpha(imgBattle);
         TouchEffect.addAlpha(imgSetting);
-        TouchEffect.addAlpha(imgRanking);
+        TouchEffect.addAlpha(imgExit);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         imgPlay.setOnClickListener(this);
         imgBattle.setOnClickListener(this);
         imgSetting.setOnClickListener(this);
-        imgRanking.setOnClickListener(this);
+        imgExit.setOnClickListener(this);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         imgPlay.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgBattle.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgSetting.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
-        imgRanking.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
+        imgExit.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgFlower.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ochna_tree), screenWidth));
     }
 
@@ -108,8 +109,9 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
             case R.id.imgSetting:
                 startActivity(SettingActivity.class);
                 break;
-            case R.id.imgRanking:
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            case R.id.imgExit:
+                finish();
+                Media.stopBackgroundMusic();
                 break;
         }
     }

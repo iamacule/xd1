@@ -53,6 +53,7 @@ public class SplashActivity extends BaseActivity {
                         lnMain.removeAllViews();
                         Intent in = new Intent(SplashActivity.this, ChooserActivity.class);
                         startActivity(in);
+                        finish();
                     }
 
                     @Override
