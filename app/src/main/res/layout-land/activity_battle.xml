@@ -237,7 +237,7 @@
             </FrameLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/lnBottom"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -245,10 +245,31 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/lnSecret"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.05"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.95"/>
+
+            </LinearLayout>
+
+
             <FrameLayout
                 android:id="@+id/btnAction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
 
                 <ImageView
                     android:id="@+id/imgAction"
@@ -271,8 +292,63 @@
                     android:textColor="@color/yellow_text"
                     android:textSize="@dimen/button_text_size" />
             </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <android.support.v4.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.49" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:orientation="horizontal">
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="0dp"
+
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.485" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.05"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:id="@+id/btnChan"
+                                android:layout_width="0dp"
+                                android:background="@color/colorAccent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.25"></LinearLayout>
+                            <android.support.v4.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.5" />
+                            <LinearLayout
+                                android:id="@+id/btnLe"
+                                android:layout_width="0dp"
+                                android:background="@color/colorAccent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.25"></LinearLayout>
+                        </LinearLayout>
+                        <android.support.v4.widget.Space
+                            android:layout_width="0dp"
+
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.483" />
+                    </LinearLayout>
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.41" />
+                </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
 
     <vn.mran.xd1.draw.DrawParallaxStar
@@ -285,5 +361,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:layout_margin="@dimen/icon_button_margin"/>
+        android:layout_margin="@dimen/icon_button_margin" />
 </FrameLayout>

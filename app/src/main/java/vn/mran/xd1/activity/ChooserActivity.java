@@ -22,7 +22,6 @@ import vn.mran.xd1.util.TouchEffect;
  */
 public class ChooserActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ChooserActivity";
-    private ImageView imgPlay;
     private ImageView imgBattle;
     private ImageView imgSetting;
     private ImageView imgFlower;
@@ -33,7 +32,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initLayout() {
-        imgPlay = (ImageView) findViewById(R.id.imgPlay);
         imgBattle = (ImageView) findViewById(R.id.imgBattle);
         imgSetting = (ImageView) findViewById(R.id.imgSetting);
         imgExit = (ImageView) findViewById(R.id.imgExit);
@@ -44,7 +42,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initValue() {
-        TouchEffect.addAlpha(imgPlay);
         TouchEffect.addAlpha(imgBattle);
         TouchEffect.addAlpha(imgSetting);
         TouchEffect.addAlpha(imgExit);
@@ -53,7 +50,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void initAction() {
         startAnimation();
-        imgPlay.setOnClickListener(this);
         imgBattle.setOnClickListener(this);
         imgSetting.setOnClickListener(this);
         imgExit.setOnClickListener(this);
@@ -85,7 +81,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
             }
         });
         lnChoose.startAnimation(animation);
-        imgPlay.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgBattle.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgSetting.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgExit.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
@@ -94,15 +89,13 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        EventUtil.backPressExitApp(this);
+        finish();
+        Media.stopBackgroundMusic();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgPlay:
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
             case R.id.imgBattle:
                 startActivity(BattleActivity.class);
                 break;

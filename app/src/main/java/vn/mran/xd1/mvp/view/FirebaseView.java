@@ -5,5 +5,11 @@ package vn.mran.xd1.mvp.view;
  */
 
 public interface FirebaseView {
-    void onDataChange(String value);
+    void onRuleChanged(String value);
+
+    void onNumOfRuleChanged(int numberOfRule);
+
+    void onMainRuleChanged(String value,boolean enable);
+
+    void onNumOfMainRuleChanged(int numberOfRule);
 }

@@ -25,6 +25,8 @@ public class DrawBattle extends View {
         void onTouch();
 
         void onLidChanged(boolean isOpened);
+
+        void onResultUpdate(byte result);
     }
 
     private final String TAG = getClass().getSimpleName();
@@ -65,12 +67,10 @@ public class DrawBattle extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        if (midPoint == null) {
-            width = w;
-            height = h;
-            midPoint = new Point(width / 2, height / 2);
-            invalidate();
-        }
+        width = w;
+        height = h;
+        midPoint = new Point(width / 2, height / 2);
+        invalidate();
     }
 
     @Override
@@ -104,7 +104,7 @@ public class DrawBattle extends View {
         return true;
     }
 
-    public void closeLid() {
+    public void closeLid(final byte result) {
         for (int i = 0 - lid.getHeight() / 2; i <= height / 2; i += 3) {
             try {
                 Thread.sleep(1);
@@ -118,6 +118,7 @@ public class DrawBattle extends View {
                 Task.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
+                        onDrawBattleUpdate.onResultUpdate(result);
                         onDrawBattleUpdate.onLidChanged(isLidOpened);
                     }
                 });

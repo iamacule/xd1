@@ -22,7 +22,23 @@ public class FirebasePresenter {
         FirebaseDatabase.getInstance().getReference("message").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                firebaseView.onDataChange(dataSnapshot.getValue(String.class));
+                String data = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Receive : " + data);
+                Log.d(TAG, "Convert rule: " + data.split(" ")[0]);
+                Log.d(TAG, "Convert number: " + data.split(" ")[1]);
+
+                if (data.substring(0, 1).equals("R")) {
+                    firebaseView.onRuleChanged(data.split(" ")[0]);
+                    firebaseView.onNumOfRuleChanged(Integer.parseInt(data.split(" ")[1]));
+                } else {
+                    if (data.split(" ")[1].equals("true")) {
+                        firebaseView.onMainRuleChanged(data.split(" ")[0], true);
+                        firebaseView.onNumOfMainRuleChanged(Integer.parseInt(data.split(" ")[2]));
+                    } else {
+                        firebaseView.onMainRuleChanged(data.split(" ")[0], false);
+                        firebaseView.onNumOfMainRuleChanged(0);
+                    }
+                }
             }
 
             @Override

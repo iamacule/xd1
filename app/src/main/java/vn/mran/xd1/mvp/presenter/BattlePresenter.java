@@ -5,6 +5,7 @@ import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 
 import vn.mran.xd1.R;
+import vn.mran.xd1.constant.PrefValue;
 import vn.mran.xd1.helper.Log;
 import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.instance.Rules;
@@ -30,8 +31,16 @@ public class BattlePresenter {
         this.view = view;
     }
 
-    public void getResult() {
-        boolean b = Rules.getInstance().getResult();
+    public void getResult(byte result) {
+        boolean b;
+        switch (result) {
+            case PrefValue.RESULT_RULES:
+                b = Rules.getInstance().getResult();
+                break;
+            default:
+                b = (result == PrefValue.RESULT_CHAN);
+                break;
+        }
         boolean[] resultArrays;
         while (true) {
             resultArrays = (new boolean[]{Rules.getInstance().randomBoolean(),
@@ -41,7 +50,6 @@ public class BattlePresenter {
 
             int tong = 0;
             for (boolean b2 : resultArrays) {
-                Log.d(TAG, "" + b2);
                 if (b2)
                     tong += 2;
                 else
