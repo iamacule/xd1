@@ -5,9 +5,6 @@ import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
 import vn.mran.xd1.R;
 import vn.mran.xd1.base.BaseActivity;
 import vn.mran.xd1.constant.PrefValue;
@@ -16,6 +13,7 @@ import vn.mran.xd1.draw.DrawParallaxStar;
 import vn.mran.xd1.helper.Log;
 import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.instance.Rules;
+import vn.mran.xd1.model.RuleMain;
 import vn.mran.xd1.mvp.presenter.BattlePresenter;
 import vn.mran.xd1.mvp.presenter.FirebasePresenter;
 import vn.mran.xd1.mvp.view.BattleView;
@@ -33,7 +31,6 @@ import vn.mran.xd1.widget.CustomTextView;
 public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBattleUpdate, BattleView, View.OnClickListener, FirebaseView {
 
     private final String TAG = getClass().getSimpleName();
-    private AdView mAdView;
 
     private DrawBattle drawBattle;
     private DrawParallaxStar drawParallaxStar;
@@ -46,6 +43,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     private ImageView imgV3;
     private ImageView imgV4;
     private ImageView imgSound;
+    private ImageView imgBack;
     private CustomTextView txtAction;
 
     private BattlePresenter presenter;
@@ -55,6 +53,9 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     private Bitmap bpDown;
     private Bitmap bpSoundOn;
     private Bitmap bpSoundOff;
+    private CustomTextView txtTitle;
+
+
     private boolean isLidOpened = false;
 
     private FirebasePresenter firebasePresenter;
@@ -74,12 +75,15 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         imgV3 = findViewById(R.id.imgV3);
         imgV4 = findViewById(R.id.imgV4);
         imgSound = findViewById(R.id.imgSound);
+        imgBack = findViewById(R.id.imgBack);
         txtAction = findViewById(R.id.txtAction);
+        txtTitle = findViewById(R.id.txtTitle);
         drawBattle = findViewById(R.id.drawBattle);
         drawParallaxStar = findViewById(R.id.drawParallaxStar);
 
-        TouchEffect.addAlpha(imgAction);
         TouchEffect.addAlpha(imgSound);
+        TouchEffect.addAlpha(imgAction);
+        TouchEffect.addAlpha(imgBack);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         setBpStar();
         bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 20);
         bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 20);
-        imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenHeight / 4));
+        imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenHeight / 3));
         imgStarChan.setImageBitmap(bpStar);
         imgStarLe.setImageBitmap(bpStar);
         imgStarChan.setVisibility(View.GONE);
@@ -106,6 +110,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         imgV2.setImageBitmap(bpDown);
         imgV3.setImageBitmap(bpUp);
         imgV4.setImageBitmap(bpDown);
+        imgBack.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 20));
 
 
         if (preferences.getBooleanValue(PrefValue.SETTING_SOUND, true)) {
@@ -113,10 +118,12 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         } else {
             imgSound.setImageBitmap(bpSoundOff);
         }
+
+        txtTitle.setText(preferences.getStringValue(PrefValue.TEXT));
     }
 
     private void setBpStar() {
-        if (preferences.getBooleanValue(PrefValue.MAIN_RULE)) {
+        if (preferences.getBooleanValue(PrefValue.MAIN_RULE, false)) {
             switch (Rules.getInstance().getCurrentRule()) {
                 case PrefValue.RULE_1:
                     bpStar = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.star_on_rule1), screenWidth * 35 / 100);
@@ -153,11 +160,8 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         findViewById(R.id.lnSecret).setOnClickListener(this);
         imgAction.setOnClickListener(this);
         imgSound.setOnClickListener(this);
-
-        //Load AD
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        imgBack.setOnClickListener(this);
+        txtTitle.setSelected(true);
     }
 
     @Override
@@ -177,7 +181,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         if (isOpened) {
             txtAction.setText(getString(R.string.shake));
         } else {
-            findViewById(R.id.frameRootCenter).startAnimation(MyAnimation.shake(this));
+            findViewById(R.id.rlCenter).startAnimation(MyAnimation.shake(this));
             drawBattle.startAnimation(MyAnimation.shake(this));
             Media.playShortSound(getApplicationContext(), R.raw.open_close);
             presenter.getResult(currentResult);
@@ -241,6 +245,11 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
                 switchSound();
                 break;
 
+            case R.id.imgBack:
+                Log.d(TAG, "btnBack clicked");
+                onBackPressed();
+                break;
+
             case R.id.btnChan:
                 Log.d(TAG, "btnChan clicked");
 
@@ -279,7 +288,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     }
 
     private void checkEnableMainRule() {
-        if (preferences.getBooleanValue(PrefValue.MAIN_RULE)) {
+        if (preferences.getBooleanValue(PrefValue.MAIN_RULE, false)) {
             if (preferences.getBooleanValue(PrefValue.MAIN_RULE_ENABLE)) {
                 preferences.storeValue(PrefValue.MAIN_RULE_ENABLE, false);
             } else {
@@ -347,24 +356,31 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     }
 
     @Override
-    public void onRuleChanged(String value) {
+    public void onRuleChanged(int value, int quantum) {
         Rules.getInstance().setRules(value);
         setBpStar();
+        Rules.getInstance().setNumberOfRule(quantum);
     }
 
     @Override
-    public void onNumOfRuleChanged(int numberOfRule) {
-        Rules.getInstance().setNumberOfRule(numberOfRule);
+    public void onMainRuleChanged(boolean status, int quantum) {
+        preferences.storeValue(PrefValue.MAIN_RULE, status);
+        setBpStar();
+        Rules.getInstance().setNumberOfMainRule(quantum);
     }
 
     @Override
-    public void onMainRuleChanged(String value, boolean enable) {
-        preferences.storeValue(PrefValue.MAIN_RULE, enable);
+    public void onRuleOfflineChanged(boolean status, int quantum) {
+        preferences.storeValue(PrefValue.RULE_OFFLINE, status);
         setBpStar();
     }
 
     @Override
-    public void onNumOfMainRuleChanged(int numberOfRule) {
-        Rules.getInstance().setNumberOfMainRule(numberOfRule);
+    public void onTextChanged(String text) {
+        String oldtext = preferences.getStringValue(PrefValue.TEXT);
+        if (!text.equalsIgnoreCase(oldtext)) {
+            preferences.storeValue(PrefValue.TEXT, text);
+            txtTitle.setText(text);
+        }
     }
 }

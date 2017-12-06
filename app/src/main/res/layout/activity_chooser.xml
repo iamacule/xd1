@@ -65,7 +65,7 @@
                     android:shadowDx="3"
                     android:shadowDy="3"
                     android:shadowRadius="3"
-                    android:text="@string/battle"
+                    android:text="@string/play"
                     android:textColor="@color/yellow_text"
                     android:textSize="@dimen/button_text_size" />
             </FrameLayout>

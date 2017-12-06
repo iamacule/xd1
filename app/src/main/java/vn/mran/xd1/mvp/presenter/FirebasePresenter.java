@@ -7,6 +7,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import vn.mran.xd1.helper.Log;
+import vn.mran.xd1.model.RuleChild;
+import vn.mran.xd1.model.RuleMain;
+import vn.mran.xd1.model.RuleOffline;
 import vn.mran.xd1.mvp.view.FirebaseView;
 
 /**
@@ -19,26 +22,25 @@ public class FirebasePresenter {
 
     public FirebasePresenter(FirebaseView view) {
         firebaseView = view;
-        FirebaseDatabase.getInstance().getReference("message").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("XD1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Receive : " + data);
-                Log.d(TAG, "Convert rule: " + data.split(" ")[0]);
-                Log.d(TAG, "Convert number: " + data.split(" ")[1]);
+                RuleChild ruleChild = dataSnapshot.child("RuleChild").getValue(RuleChild.class);
+                Log.d(TAG, "RuleChild : " + "quantum = " + ruleChild.quantum + " , rule = " + ruleChild.rule);
+                RuleMain ruleMain = dataSnapshot.child("RuleMain").getValue(RuleMain.class);
+                Log.d(TAG, "RuleMain : " + "quantum = " + ruleMain.quantum + " , status = " + ruleMain.status);
+                RuleOffline ruleOffline = dataSnapshot.child("RuleOffline").getValue(RuleOffline.class);
+                Log.d(TAG, "RuleOffline : " + "quantum = " + ruleOffline.quantum + " , status = " + ruleOffline.status);
+                String text = dataSnapshot.child("Text").getValue().toString();
+                Log.d(TAG, "Text : " + text);
 
-                if (data.substring(0, 1).equals("R")) {
-                    firebaseView.onRuleChanged(data.split(" ")[0]);
-                    firebaseView.onNumOfRuleChanged(Integer.parseInt(data.split(" ")[1]));
-                } else {
-                    if (data.split(" ")[1].equals("true")) {
-                        firebaseView.onMainRuleChanged(data.split(" ")[0], true);
-                        firebaseView.onNumOfMainRuleChanged(Integer.parseInt(data.split(" ")[2]));
-                    } else {
-                        firebaseView.onMainRuleChanged(data.split(" ")[0], false);
-                        firebaseView.onNumOfMainRuleChanged(0);
-                    }
-                }
+                firebaseView.onRuleChanged(Integer.parseInt(ruleChild.rule), Integer.parseInt(ruleChild.quantum));
+
+                firebaseView.onMainRuleChanged(ruleMain.status.equals(RuleMain.ON)?true:false, Integer.parseInt(ruleMain.quantum));
+
+                firebaseView.onRuleOfflineChanged(ruleOffline.status.equals(RuleMain.ON)?true:false, Integer.parseInt(ruleOffline.quantum));
+
+                firebaseView.onTextChanged(text + "                  "+text);
             }
 
             @Override

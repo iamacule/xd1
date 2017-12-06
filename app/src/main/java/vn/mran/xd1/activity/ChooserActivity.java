@@ -1,20 +1,13 @@
 package vn.mran.xd1.activity;
 
-import android.app.Activity;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import vn.mran.xd1.R;
 import vn.mran.xd1.base.BaseActivity;
 import vn.mran.xd1.instance.Media;
-import vn.mran.xd1.util.EventUtil;
-import vn.mran.xd1.util.MyAnimation;
 import vn.mran.xd1.util.ResizeBitmap;
-import vn.mran.xd1.util.ScreenUtil;
 import vn.mran.xd1.util.TouchEffect;
 
 /**
@@ -26,9 +19,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     private ImageView imgSetting;
     private ImageView imgFlower;
     private ImageView imgExit;
-    private LinearLayout lnChoose;
-    private LinearLayout lnImgSplash;
-    private final Activity chooserActivity = this;
 
     @Override
     public void initLayout() {
@@ -36,8 +26,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         imgSetting = (ImageView) findViewById(R.id.imgSetting);
         imgExit = (ImageView) findViewById(R.id.imgExit);
         imgFlower = (ImageView) findViewById(R.id.imgFlower);
-        lnChoose = (LinearLayout) findViewById(R.id.lnChoose);
-        lnImgSplash = (LinearLayout) findViewById(R.id.lnImgSplash);
     }
 
     @Override
@@ -61,26 +49,6 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void startAnimation() {
-        lnImgSplash.startAnimation(MyAnimation.fadeIn(chooserActivity));
-        Animation animation = MyAnimation.sliceInToTopLong(chooserActivity);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                lnChoose.clearAnimation();
-                Log.d(TAG, "Clear Animations");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        lnChoose.startAnimation(animation);
         imgBattle.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgSetting.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));
         imgExit.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 2));

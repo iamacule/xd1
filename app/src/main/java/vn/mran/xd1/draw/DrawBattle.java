@@ -61,6 +61,8 @@ public class DrawBattle extends View {
     private void init(Context context) {
         lid = BitmapFactory.decodeResource(context.getResources(), R.drawable.lid);
         star = BitmapFactory.decodeResource(context.getResources(), R.drawable.star_flip);
+        setFocusable(false);
+        setFocusableInTouchMode(false);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class DrawBattle extends View {
                     onDrawBattleUpdate.onTouch();
                 break;
         }
-        return true;
+        return false;
     }
 
     public void closeLid(final byte result) {

@@ -22,7 +22,7 @@ public class Rules {
     private Preferences preferences;
     private boolean isNewResult = false;
 
-    private String currentRule;
+    private int currentRule;
     private int numberOfRule;
     private int numberOfMainRule;
     private boolean[] resultArrays = new boolean[4];
@@ -37,17 +37,17 @@ public class Rules {
 
     public Rules(Context context) {
         preferences = new Preferences(context);
-        currentRule = preferences.getStringValue(PrefValue.RULE, PrefValue.RULE_1);
+        currentRule = preferences.getIntValue(PrefValue.RULE, PrefValue.RULE_1);
         numberOfMainRule = preferences.getIntValue(PrefValue.NUMBER_OF_MAIN_RULE, PrefValue.DEFAULT_NUMBER_OF_MAIN_RULES);
         numberOfRule = preferences.getIntValue(PrefValue.NUMBER_OF_RULE, PrefValue.DEFAULT_NUMBER_OF_RULES);
     }
 
-    public void setRules(String rule) {
+    public void setRules(int rule) {
         currentRule = rule;
         preferences.storeValue(PrefValue.RULE, rule);
     }
 
-    public String getCurrentRule(){
+    public int getCurrentRule(){
         return currentRule;
     }
 
