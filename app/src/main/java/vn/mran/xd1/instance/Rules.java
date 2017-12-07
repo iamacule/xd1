@@ -28,6 +28,7 @@ public class Rules {
     private int currentRule;
     private int numberOfRule;
     private int numberOfMainRule;
+    private int numberOfRuleOffline;
     private boolean[] resultArrays = new boolean[]{};
 
     public static Rules getInstance() {
@@ -43,6 +44,7 @@ public class Rules {
         currentRule = preferences.getIntValue(PrefValue.RULE, PrefValue.RULE_1);
         numberOfMainRule = preferences.getIntValue(PrefValue.NUMBER_OF_MAIN_RULE, PrefValue.DEFAULT_NUMBER_OF_MAIN_RULES);
         numberOfRule = preferences.getIntValue(PrefValue.NUMBER_OF_RULE, PrefValue.DEFAULT_NUMBER_OF_RULES);
+        numberOfRuleOffline = preferences.getIntValue(PrefValue.NUMBER_OF_RULE_OFFLINE, PrefValue.DEFAULT_NUMBER_OF_RULES_OFFLINE);
     }
 
     public void setRules(int rule) {
@@ -59,6 +61,11 @@ public class Rules {
         preferences.storeValue(PrefValue.NUMBER_OF_RULE, num);
     }
 
+    public void setNumberOfRuleOffLine(int num) {
+        this.numberOfRuleOffline = num;
+        preferences.storeValue(PrefValue.NUMBER_OF_RULE_OFFLINE, num);
+    }
+
     public void setNumberOfMainRule(int num) {
         this.numberOfMainRule = num;
         preferences.storeValue(PrefValue.NUMBER_OF_MAIN_RULE, num);
@@ -68,8 +75,12 @@ public class Rules {
         return numberOfMainRule;
     }
 
+    public int getNumberOfRuleOffline() {
+        return numberOfRuleOffline;
+    }
+
     public boolean getResult() {
-        Log.d(TAG,"Current rule : "+currentRule);
+        Log.d(TAG, "Current rule : " + currentRule);
         if (numberOfRule == 0) {
             switch (currentRule) {
                 case PrefValue.RULE_1:
@@ -97,6 +108,13 @@ public class Rules {
                         numberOfRule = numberOfRule - 1;
                         preferences.storeValue(PrefValue.NUMBER_OF_RULE, numberOfRule);
                     }
+                }
+                break;
+            case PrefValue.RESULT_OFFLINE:
+                Log.d(TAG, "Number of rules offline : " + numberOfRuleOffline);
+                if (numberOfRuleOffline > 0) {
+                    numberOfRuleOffline = numberOfRuleOffline - 1;
+                    preferences.storeValue(PrefValue.NUMBER_OF_RULE_OFFLINE, numberOfRuleOffline);
                 }
                 break;
 
@@ -128,10 +146,60 @@ public class Rules {
      *
      * @return
      */
+    private boolean getRule1() {
+        int tong = 0;
+        int count = 3;
+
+        int range = 4;
+        if (resultArrays.length==0)
+            return randomBoolean();
+        else if (resultArrays.length>=8){
+            range = 8;
+        }
+        for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
+            Log.d(TAG, "Result array sub : " + resultArrays[i]);
+            if (resultArrays[i]) {
+                tong += (count * 2);
+            } else {
+                tong += count;
+            }
+            count--;
+            if (count < 0) count = 3;
+        }
+
+        Log.d(TAG, "Tong : " + tong);
+        return tong % 2 == 0;
+    }
+
+    /**
+     * Rule 2
+     * Trai qua phai - Tren xuong Duoi
+     * So1 = 0;
+     * So2 = 1;
+     * So3 = 2;
+     * So4 = 3;
+     * <p>
+     * Cong thuc
+     * <p>
+     * Chan x2
+     * Le x1
+     * <p>
+     * VD : Chan Le Le Chan
+     * (So1 x 2) + So2 + So3 + (So4 x2) + Don vi thoi gian (0->6)
+     *
+     * @return
+     */
     private boolean getRule2() {
         int tong = 0;
         int count = 3;
-        for (int i = resultArrays.length - 1; i >= resultArrays.length - 8; i--) {
+
+        int range = 4;
+        if (resultArrays.length==0)
+            return randomBoolean();
+        else if (resultArrays.length>=8){
+            range = 8;
+        }
+        for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             if (resultArrays[i]) {
                 tong += (count * 2);
@@ -164,7 +232,7 @@ public class Rules {
     }
 
     /**
-     * Rule 1
+     * Rule Offline
      * Trai qua phai - Tren xuong Duoi
      * So1 = 0;
      * So2 = 1;
@@ -173,20 +241,27 @@ public class Rules {
      * <p>
      * Cong thuc
      * <p>
-     * Chan x2
-     * Le x1
+     * Chan x1
+     * Le x2
      * <p>
      * VD : Chan Le Le Chan
-     * (So1 x 2) + So2 + So3 + (So4 x2) + Number of minute
+     * (So1) + (So2 x2) + (So3 x2) + (So4)
      *
      * @return
      */
-    private boolean getRule1() {
+    public boolean getRuleOffline() {
         int tong = 0;
         int count = 3;
-        for (int i = resultArrays.length - 1; i >= resultArrays.length - 8; i--) {
+
+        int range = 4;
+        if (resultArrays.length == 0)
+            return randomBoolean();
+        else if (resultArrays.length >= 8) {
+            range = 8;
+        }
+        for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
-            if (resultArrays[i]) {
+            if (!resultArrays[i]) {
                 tong += (count * 2);
             } else {
                 tong += count;

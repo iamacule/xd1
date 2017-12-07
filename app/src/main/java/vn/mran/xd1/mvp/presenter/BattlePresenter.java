@@ -3,6 +3,8 @@ package vn.mran.xd1.mvp.presenter;
 import android.content.Context;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import vn.mran.xd1.R;
 import vn.mran.xd1.constant.PrefValue;
@@ -37,6 +39,9 @@ public class BattlePresenter {
             case PrefValue.RESULT_RULES:
                 b = Rules.getInstance().getResult();
                 break;
+            case PrefValue.RESULT_OFFLINE:
+                b = Rules.getInstance().getRuleOffline();
+                break;
             default:
                 b = (result == PrefValue.RESULT_CHAN);
                 break;
@@ -66,5 +71,12 @@ public class BattlePresenter {
             }
         }
         view.setImage(resultArrays, b);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

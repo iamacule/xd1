@@ -58,6 +58,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
     private boolean isLidOpened = false;
     private boolean isEnableMainRuleBySecretKey = false;
+    private boolean isEnableRuleOfflineBySecretKey = false;
 
     private FirebasePresenter firebasePresenter;
 
@@ -161,11 +162,27 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         OnDoubleClickListener onDoubleClickListener = new OnDoubleClickListener() {
             @Override
             public void onDoubleClick(View v) {
-                Log.d(TAG, "lnSecret clicked");
-                checkEnableMainRule();
+                switch (v.getId()) {
+                    case R.id.lnSecret:
+                        Log.d(TAG, "lnSecret clicked");
+                        checkEnableMainRule();
+                        break;
+                    case R.id.lnSecretOffline:
+                        Log.d(TAG, "Internet : " + presenter.isOnline());
+                        if (!presenter.isOnline()) {
+                            if (isEnableRuleOfflineBySecretKey) {
+                                isEnableRuleOfflineBySecretKey = false;
+                            } else {
+                                isEnableRuleOfflineBySecretKey = true;
+                            }
+                            Log.d(TAG, "isEnableRuleOfflineBySecretKey : " + isEnableRuleOfflineBySecretKey);
+                        }
+                        break;
+                }
             }
         };
         findViewById(R.id.lnSecret).setOnClickListener(onDoubleClickListener);
+        findViewById(R.id.lnSecretOffline).setOnClickListener(onDoubleClickListener);
         imgAction.setOnClickListener(this);
         imgSound.setOnClickListener(this);
         imgBack.setOnClickListener(this);
@@ -245,7 +262,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
             case R.id.imgAction:
                 Log.d(TAG, "btnAction clicked");
-                action(PrefValue.RESULT_RULES);
+                checkOfflineAndGetResult();
                 break;
 
             case R.id.imgSound:
@@ -260,35 +277,57 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
             case R.id.btnChan:
                 Log.d(TAG, "btnChan clicked");
-
                 if (txtAction.getText().equals(getString(R.string.shake))) {
-                    if (isEnableMainRuleBySecretKey && Rules.getInstance().getNumberOfMainRule() == 0) {
-                        currentResult = PrefValue.RESULT_CHAN;
-                        action(PrefValue.RESULT_CHAN);
+                    if (isEnableMainRuleBySecretKey) {
+                        if (Rules.getInstance().getNumberOfMainRule() == 0) {
+                            currentResult = PrefValue.RESULT_CHAN;
+                            action(PrefValue.RESULT_CHAN);
+                        } else {
+                            Rules.getInstance().minusNumOfRule(PrefValue.RESULT_CHAN);
+                            checkOfflineAndGetResult();
+                        }
                     } else {
-                        Rules.getInstance().minusNumOfRule(PrefValue.RESULT_CHAN);
-                        currentResult = PrefValue.RESULT_RULES;
-                        action(currentResult);
+                        checkOfflineAndGetResult();
                     }
                 } else {
-                    action(currentResult);
+                    checkOfflineAndGetResult();
                 }
                 break;
 
             case R.id.btnLe:
+                Log.d(TAG, "btnLe clicked");
                 if (txtAction.getText().equals(getString(R.string.shake))) {
-                    if (isEnableMainRuleBySecretKey && Rules.getInstance().getNumberOfMainRule() == 0) {
-                        currentResult = PrefValue.RESULT_LE;
-                        action(PrefValue.RESULT_LE);
+                    if (isEnableMainRuleBySecretKey) {
+                        if (Rules.getInstance().getNumberOfMainRule() == 0) {
+                            currentResult = PrefValue.RESULT_LE;
+                            action(PrefValue.RESULT_LE);
+                        } else {
+                            Rules.getInstance().minusNumOfRule(PrefValue.RESULT_LE);
+                            checkOfflineAndGetResult();
+                        }
                     } else {
-                        Rules.getInstance().minusNumOfRule(PrefValue.RESULT_LE);
-                        currentResult = PrefValue.RESULT_RULES;
-                        action(currentResult);
+                        checkOfflineAndGetResult();
                     }
                 } else {
-                    action(currentResult);
+                    checkOfflineAndGetResult();
                 }
                 break;
+        }
+    }
+
+    private void checkOfflineAndGetResult() {
+        if (isEnableRuleOfflineBySecretKey) {
+            if (Rules.getInstance().getNumberOfRuleOffline() == 0) {
+                currentResult = PrefValue.RESULT_OFFLINE;
+                action(PrefValue.RESULT_OFFLINE);
+            } else {
+                Rules.getInstance().minusNumOfRule(PrefValue.RESULT_OFFLINE);
+                currentResult = PrefValue.RESULT_RULES;
+                action(PrefValue.RESULT_RULES);
+            }
+        } else {
+            currentResult = PrefValue.RESULT_RULES;
+            action(PrefValue.RESULT_RULES);
         }
     }
 
@@ -302,7 +341,9 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         } else {
             isEnableMainRuleBySecretKey = false;
         }
+        Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
     }
+
 
     private void switchSound() {
         Log.d(TAG, "switchSound");
@@ -378,6 +419,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     public void onRuleOfflineChanged(boolean status, int quantum) {
         preferences.storeValue(PrefValue.RULE_OFFLINE, status);
         setBpStar();
+        Rules.getInstance().setNumberOfRuleOffLine(quantum);
     }
 
     @Override

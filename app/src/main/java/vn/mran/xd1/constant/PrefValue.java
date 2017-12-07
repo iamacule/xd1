@@ -13,7 +13,6 @@ public interface PrefValue {
 
     int DEFAULT_NUMBER_OF_RULES = 10000;
 
-    int RULE_RANDOM = -1;
     int RULE_1 = 1;
     int RULE_2 = 2;
 
@@ -24,10 +23,12 @@ public interface PrefValue {
     String NUMBER_OF_RULE_OFFLINE = "NUMBER_OF_RULE_OFFLINE";
 
     int DEFAULT_NUMBER_OF_MAIN_RULES = 10000;
+    int DEFAULT_NUMBER_OF_RULES_OFFLINE = 10000;
 
     byte RESULT_RULES = 0;
     byte RESULT_CHAN = 1;
     byte RESULT_LE = 2;
+    byte RESULT_OFFLINE = 3;
 
     String TEXT = "TEXT";
 }
