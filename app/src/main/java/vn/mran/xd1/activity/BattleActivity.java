@@ -11,9 +11,9 @@ import vn.mran.xd1.constant.PrefValue;
 import vn.mran.xd1.draw.DrawBattle;
 import vn.mran.xd1.draw.DrawParallaxStar;
 import vn.mran.xd1.helper.Log;
+import vn.mran.xd1.helper.OnDoubleClickListener;
 import vn.mran.xd1.instance.Media;
 import vn.mran.xd1.instance.Rules;
-import vn.mran.xd1.model.RuleMain;
 import vn.mran.xd1.mvp.presenter.BattlePresenter;
 import vn.mran.xd1.mvp.presenter.FirebasePresenter;
 import vn.mran.xd1.mvp.view.BattleView;
@@ -57,6 +57,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
 
     private boolean isLidOpened = false;
+    private boolean isEnableMainRuleBySecretKey = false;
 
     private FirebasePresenter firebasePresenter;
 
@@ -157,7 +158,14 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         findViewById(R.id.root).setOnClickListener(this);
         findViewById(R.id.btnChan).setOnClickListener(this);
         findViewById(R.id.btnLe).setOnClickListener(this);
-        findViewById(R.id.lnSecret).setOnClickListener(this);
+        OnDoubleClickListener onDoubleClickListener = new OnDoubleClickListener() {
+            @Override
+            public void onDoubleClick(View v) {
+                Log.d(TAG, "lnSecret clicked");
+                checkEnableMainRule();
+            }
+        };
+        findViewById(R.id.lnSecret).setOnClickListener(onDoubleClickListener);
         imgAction.setOnClickListener(this);
         imgSound.setOnClickListener(this);
         imgBack.setOnClickListener(this);
@@ -254,10 +262,11 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
                 Log.d(TAG, "btnChan clicked");
 
                 if (txtAction.getText().equals(getString(R.string.shake))) {
-                    if (preferences.getBooleanValue(PrefValue.MAIN_RULE_ENABLE) && Rules.getInstance().getNumberOfMainRule() > 0) {
+                    if (isEnableMainRuleBySecretKey && Rules.getInstance().getNumberOfMainRule() == 0) {
                         currentResult = PrefValue.RESULT_CHAN;
                         action(PrefValue.RESULT_CHAN);
                     } else {
+                        Rules.getInstance().minusNumOfRule(PrefValue.RESULT_CHAN);
                         currentResult = PrefValue.RESULT_RULES;
                         action(currentResult);
                     }
@@ -268,10 +277,11 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
             case R.id.btnLe:
                 if (txtAction.getText().equals(getString(R.string.shake))) {
-                    if (preferences.getBooleanValue(PrefValue.MAIN_RULE_ENABLE) && Rules.getInstance().getNumberOfMainRule() > 0) {
+                    if (isEnableMainRuleBySecretKey && Rules.getInstance().getNumberOfMainRule() == 0) {
                         currentResult = PrefValue.RESULT_LE;
                         action(PrefValue.RESULT_LE);
                     } else {
+                        Rules.getInstance().minusNumOfRule(PrefValue.RESULT_LE);
                         currentResult = PrefValue.RESULT_RULES;
                         action(currentResult);
                     }
@@ -279,23 +289,18 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
                     action(currentResult);
                 }
                 break;
-
-            case R.id.lnSecret:
-                Log.d(TAG, "lnSecret clicked");
-                checkEnableMainRule();
-                break;
         }
     }
 
     private void checkEnableMainRule() {
         if (preferences.getBooleanValue(PrefValue.MAIN_RULE, false)) {
-            if (preferences.getBooleanValue(PrefValue.MAIN_RULE_ENABLE)) {
-                preferences.storeValue(PrefValue.MAIN_RULE_ENABLE, false);
+            if (isEnableMainRuleBySecretKey) {
+                isEnableMainRuleBySecretKey = false;
             } else {
-                preferences.storeValue(PrefValue.MAIN_RULE_ENABLE, true);
+                isEnableMainRuleBySecretKey = true;
             }
         } else {
-            preferences.storeValue(PrefValue.MAIN_RULE_ENABLE, false);
+            isEnableMainRuleBySecretKey = false;
         }
     }
 

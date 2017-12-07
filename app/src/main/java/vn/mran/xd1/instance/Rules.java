@@ -2,8 +2,11 @@ package vn.mran.xd1.instance;
 
 import android.content.Context;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import vn.mran.xd1.constant.PrefValue;
@@ -25,7 +28,7 @@ public class Rules {
     private int currentRule;
     private int numberOfRule;
     private int numberOfMainRule;
-    private boolean[] resultArrays = new boolean[4];
+    private boolean[] resultArrays = new boolean[]{};
 
     public static Rules getInstance() {
         return instance;
@@ -47,7 +50,7 @@ public class Rules {
         preferences.storeValue(PrefValue.RULE, rule);
     }
 
-    public int getCurrentRule(){
+    public int getCurrentRule() {
         return currentRule;
     }
 
@@ -66,8 +69,8 @@ public class Rules {
     }
 
     public boolean getResult() {
-        if (numberOfRule > 0) {
-            isNewResult = true;
+        Log.d(TAG,"Current rule : "+currentRule);
+        if (numberOfRule == 0) {
             switch (currentRule) {
                 case PrefValue.RULE_1:
                     Log.d(TAG, "Rule 1");
@@ -79,13 +82,12 @@ public class Rules {
                     return getRule1();
             }
         } else {
-            setRules(PrefValue.RULE_RANDOM);
+            isNewResult = true;
             return randomBoolean();
         }
     }
 
     public void minusNumOfRule(byte currentResult) {
-        android.util.Log.d(TAG, "minusNumOfRule current result : " + currentResult);
         switch (currentResult) {
             case PrefValue.RESULT_RULES:
                 Log.d(TAG, "Number of rules : " + numberOfRule);
@@ -126,46 +128,18 @@ public class Rules {
      *
      * @return
      */
-    private boolean getRule1() {
-        int tong = 0;
-        for (int i = 0; i < resultArrays.length; i++) {
-            if (resultArrays[i]) {
-                tong += (i * 2);
-            } else {
-                tong += i;
-            }
-        }
-
-        Log.d(TAG, "Tong : " + tong);
-        return tong % 2 == 0;
-    }
-
-    /**
-     * Rule 1
-     * Trai qua phai - Tren xuong Duoi
-     * So1 = 0;
-     * So2 = 1;
-     * So3 = 2;
-     * So4 = 3;
-     * <p>
-     * Cong thuc
-     * <p>
-     * Chan x2
-     * Le x1
-     * <p>
-     * VD : Chan Le Le Chan
-     * (So1 x 2) + So2 + So3 + (So4 x2) + Number of minute
-     *
-     * @return
-     */
     private boolean getRule2() {
         int tong = 0;
-        for (int i = 0; i < resultArrays.length; i++) {
+        int count = 3;
+        for (int i = resultArrays.length - 1; i >= resultArrays.length - 8; i--) {
+            Log.d(TAG, "Result array sub : " + resultArrays[i]);
             if (resultArrays[i]) {
-                tong += (i * 2);
+                tong += (count * 2);
             } else {
-                tong += i;
+                tong += count;
             }
+            count--;
+            if (count < 0) count = 3;
         }
 
         Log.d(TAG, "Tong 1 : " + tong);
@@ -189,8 +163,44 @@ public class Rules {
         return tong % 2 == 0;
     }
 
+    /**
+     * Rule 1
+     * Trai qua phai - Tren xuong Duoi
+     * So1 = 0;
+     * So2 = 1;
+     * So3 = 2;
+     * So4 = 3;
+     * <p>
+     * Cong thuc
+     * <p>
+     * Chan x2
+     * Le x1
+     * <p>
+     * VD : Chan Le Le Chan
+     * (So1 x 2) + So2 + So3 + (So4 x2) + Number of minute
+     *
+     * @return
+     */
+    private boolean getRule1() {
+        int tong = 0;
+        int count = 3;
+        for (int i = resultArrays.length - 1; i >= resultArrays.length - 8; i--) {
+            Log.d(TAG, "Result array sub : " + resultArrays[i]);
+            if (resultArrays[i]) {
+                tong += (count * 2);
+            } else {
+                tong += count;
+            }
+            count--;
+            if (count < 0) count = 3;
+        }
+
+        Log.d(TAG, "Tong : " + tong);
+        return tong % 2 == 0;
+    }
+
     public void setResultArrays(boolean[] arrays) {
-        resultArrays = arrays;
+        resultArrays = ArrayUtils.addAll(resultArrays, arrays);
     }
 
     public boolean randomBoolean() {
