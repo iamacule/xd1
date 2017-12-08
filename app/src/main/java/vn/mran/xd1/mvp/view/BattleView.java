@@ -6,4 +6,5 @@ package vn.mran.xd1.mvp.view;
 
 public interface BattleView {
     void setImage(boolean[] imageRuleArrays, boolean result);
+    void onNetworkChanged(boolean isEnable);
 }

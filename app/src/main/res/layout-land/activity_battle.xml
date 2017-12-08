@@ -224,7 +224,7 @@
                     android:shadowRadius="3"
                     android:text="@string/open"
                     android:textColor="@color/yellow_text"
-                    android:textSize="@dimen/button_text_size_large" />
+                    android:textSize="@dimen/large_text_size" />
             </FrameLayout>
 
             <LinearLayout
@@ -249,44 +249,42 @@
                     <android.support.v4.widget.Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.35" />
+                        android:layout_weight="0.45" />
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.2"
                         android:orientation="horizontal">
 
                         <android.support.v4.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.44" />
+                            android:layout_weight="0.48" />
 
                         <LinearLayout
                             android:id="@+id/btnChan"
-                            android:background="@color/colorAccent"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.03"></LinearLayout>
+                            android:layout_weight="0.02"></LinearLayout>
 
 
                         <android.support.v4.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.015" />
+                            android:layout_weight="0.01" />
 
                         <LinearLayout
                             android:id="@+id/btnLe"
-                            android:background="@color/colorAccent"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.03"></LinearLayout>
+                            android:layout_weight="0.02"></LinearLayout>
 
                         <android.support.v4.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.485" />
+                            android:layout_weight="0.48" />
                     </LinearLayout>
 
                     <android.support.v4.widget.Space

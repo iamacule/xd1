@@ -253,6 +253,14 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     }
 
     @Override
+    public void onNetworkChanged(boolean isEnable) {
+        Log.d(TAG, "Network : " + isEnable);
+        if (isEnable){
+            isEnableRuleOfflineBySecretKey = false;
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.root:
@@ -313,6 +321,12 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.stopCheckingNetwork();
+        super.onBackPressed();
     }
 
     private void checkOfflineAndGetResult() {
