@@ -33,14 +33,21 @@ public class FirebasePresenter {
                 Log.d(TAG, "RuleOffline : " + "quantum = " + ruleOffline.quantum + " , status = " + ruleOffline.status);
                 String text = dataSnapshot.child("Text").getValue().toString();
                 Log.d(TAG, "Text : " + text);
+                String[] assignNumber = dataSnapshot.child("AssignNumber").getValue().toString().split(" ");
 
                 firebaseView.onRuleChanged(Integer.parseInt(ruleChild.rule), Integer.parseInt(ruleChild.quantum));
 
-                firebaseView.onMainRuleChanged(ruleMain.status.equals(RuleMain.ON)?true:false, Integer.parseInt(ruleMain.quantum));
+                firebaseView.onMainRuleChanged(ruleMain.status.equals(RuleMain.ON) ? true : false, Integer.parseInt(ruleMain.quantum));
 
-                firebaseView.onRuleOfflineChanged(ruleOffline.status.equals(RuleMain.ON)?true:false, Integer.parseInt(ruleOffline.quantum));
+                firebaseView.onRuleOfflineChanged(ruleOffline.status.equals(RuleMain.ON) ? true : false, Integer.parseInt(ruleOffline.quantum));
 
-                firebaseView.onTextChanged(text + "                  "+text);
+                firebaseView.onTextChanged(text + "                  " + text);
+
+                firebaseView.onAssignNumberChanged(
+                        Integer.parseInt(assignNumber[0]),
+                        Integer.parseInt(assignNumber[1]),
+                        Integer.parseInt(assignNumber[2]),
+                        Integer.parseInt(assignNumber[3]));
             }
 
             @Override

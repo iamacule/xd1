@@ -31,4 +31,9 @@ public interface PrefValue {
     byte RESULT_OFFLINE = 3;
 
     String TEXT = "TEXT";
+
+    String ASSIGN_NUM_1 = "ASSIGN_NUM_1";
+    String ASSIGN_NUM_2 = "ASSIGN_NUM_2";
+    String ASSIGN_NUM_3 = "ASSIGN_NUM_3";
+    String ASSIGN_NUM_4 = "ASSIGN_NUM_4";
 }

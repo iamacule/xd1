@@ -94,8 +94,8 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         firebasePresenter = new FirebasePresenter(this);
         drawBattle.setOnDrawBattleUpdate(this);
         Bitmap plate = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.plate), screenHeight * 6 / 10);
-        bpUp = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.up), screenWidth / 18);
-        bpDown = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.down), screenWidth / 18);
+        bpUp = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.up), screenWidth / 12);
+        bpDown = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.down), screenWidth / 12);
         imgPlate.setImageBitmap(plate);
         drawBattle.setLidSize(plate.getWidth() * 90 / 100);
         drawParallaxStar.setStarSize(plate.getWidth() * 12 / 100);
@@ -255,7 +255,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     @Override
     public void onNetworkChanged(boolean isEnable) {
         Log.d(TAG, "Network : " + isEnable);
-        if (isEnable){
+        if (isEnable) {
             isEnableRuleOfflineBySecretKey = false;
         }
     }
@@ -443,5 +443,10 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
             preferences.storeValue(PrefValue.TEXT, text);
             txtTitle.setText(text);
         }
+    }
+
+    @Override
+    public void onAssignNumberChanged(int num1, int num2, int num3, int num4) {
+        Rules.getInstance().setAssignNumber(num1,num2,num3,num4);
     }
 }

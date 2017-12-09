@@ -1,18 +1,12 @@
 <resources>
     <string name="com_name">ProArmy2018</string>
     <string name="app_name">Xốc đĩa 3D 2018</string>
-    <string name="play">Chơi ngay</string>
-    <string name="setting">Cài đặt</string>
-    <string name="exit">Thoát</string>
-    <string name="sound">Âm thanh</string>
-    <string name="shake_roll">Lắc và Rê</string>
+    <string name="play">PLAY</string>
+    <string name="setting">SETTING</string>
+    <string name="exit">EXIT</string>
+    <string name="sound">Sound</string>
     <string name="chan">Chẵn</string>
     <string name="le">Lẽ</string>
     <string name="open">Mở</string>
-    <string name="close">Đóng</string>
     <string name="shake">Xốc</string>
-    
-    //ID ADS MOB
-    <string name="unit_id">ca-app-pub-8948000940234659/8892728064</string>
-    <string name="unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

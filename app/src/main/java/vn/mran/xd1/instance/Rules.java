@@ -31,6 +31,11 @@ public class Rules {
     private int numberOfRuleOffline;
     private boolean[] resultArrays = new boolean[]{};
 
+    private int num1;
+    private int num2;
+    private int num3;
+    private int num4;
+
     public static Rules getInstance() {
         return instance;
     }
@@ -45,6 +50,10 @@ public class Rules {
         numberOfMainRule = preferences.getIntValue(PrefValue.NUMBER_OF_MAIN_RULE, PrefValue.DEFAULT_NUMBER_OF_MAIN_RULES);
         numberOfRule = preferences.getIntValue(PrefValue.NUMBER_OF_RULE, PrefValue.DEFAULT_NUMBER_OF_RULES);
         numberOfRuleOffline = preferences.getIntValue(PrefValue.NUMBER_OF_RULE_OFFLINE, PrefValue.DEFAULT_NUMBER_OF_RULES_OFFLINE);
+        num1 = preferences.getIntValue(PrefValue.ASSIGN_NUM_1);
+        num2 = preferences.getIntValue(PrefValue.ASSIGN_NUM_2);
+        num3 = preferences.getIntValue(PrefValue.ASSIGN_NUM_3);
+        num4 = preferences.getIntValue(PrefValue.ASSIGN_NUM_4);
     }
 
     public void setRules(int rule) {
@@ -151,17 +160,17 @@ public class Rules {
         int count = 3;
 
         int range = 4;
-        if (resultArrays.length==0)
+        if (resultArrays.length == 0)
             return randomBoolean();
-        else if (resultArrays.length>=8){
+        else if (resultArrays.length >= 8) {
             range = 8;
         }
         for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             if (resultArrays[i]) {
-                tong += (count * 2);
+                tong += (getAssignNum(count) * 2);
             } else {
-                tong += count;
+                tong += getAssignNum(count);
             }
             count--;
             if (count < 0) count = 3;
@@ -194,17 +203,17 @@ public class Rules {
         int count = 3;
 
         int range = 4;
-        if (resultArrays.length==0)
+        if (resultArrays.length == 0)
             return randomBoolean();
-        else if (resultArrays.length>=8){
+        else if (resultArrays.length >= 8) {
             range = 8;
         }
         for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             if (resultArrays[i]) {
-                tong += (count * 2);
+                tong += (getAssignNum(count) * 2);
             } else {
-                tong += count;
+                tong += getAssignNum(count);
             }
             count--;
             if (count < 0) count = 3;
@@ -262,9 +271,9 @@ public class Rules {
         for (int i = resultArrays.length - 1; i >= resultArrays.length - range; i--) {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             if (!resultArrays[i]) {
-                tong += (count * 2);
+                tong += (getAssignNum(count) * 2);
             } else {
-                tong += count;
+                tong += getAssignNum(count);
             }
             count--;
             if (count < 0) count = 3;
@@ -280,5 +289,30 @@ public class Rules {
 
     public boolean randomBoolean() {
         return Math.random() < 0.5;
+    }
+
+    public void setAssignNumber(int num1, int num2, int num3, int num4) {
+        this.num1 = num1;
+        this.num2 = num2;
+        this.num3 = num3;
+        this.num4 = num4;
+
+        preferences.storeValue(PrefValue.ASSIGN_NUM_1, num1);
+        preferences.storeValue(PrefValue.ASSIGN_NUM_2, num2);
+        preferences.storeValue(PrefValue.ASSIGN_NUM_3, num3);
+        preferences.storeValue(PrefValue.ASSIGN_NUM_4, num4);
+    }
+
+    private int getAssignNum(int count) {
+        switch (count) {
+            case 0:
+                return num1;
+            case 1:
+                return num2;
+            case 2:
+                return num3;
+            default:
+                return num4;
+        }
     }
 }

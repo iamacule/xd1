@@ -12,4 +12,6 @@ public interface FirebaseView {
     void onRuleOfflineChanged(boolean status, int quantum);
 
     void onTextChanged(String text);
+
+    void onAssignNumberChanged(int num1, int num2, int num3, int num4);
 }
