@@ -224,7 +224,7 @@
                     android:shadowRadius="3"
                     android:text="@string/open"
                     android:textColor="@color/yellow_text"
-                    android:textSize="@dimen/large_text_size" />
+                    android:textSize="@dimen/text_size_44sp" />
             </FrameLayout>
 
             <LinearLayout
