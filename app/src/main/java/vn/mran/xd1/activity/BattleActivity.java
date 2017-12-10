@@ -187,6 +187,9 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         imgSound.setOnClickListener(this);
         imgBack.setOnClickListener(this);
         txtTitle.setSelected(true);
+
+        Log.d(TAG,"Shake at first time");
+        onLidChanged(false);
     }
 
     @Override
@@ -447,6 +450,6 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
     @Override
     public void onAssignNumberChanged(int num1, int num2, int num3, int num4) {
-        Rules.getInstance().setAssignNumber(num1,num2,num3,num4);
+        Rules.getInstance().setAssignNumber(num1, num2, num3, num4);
     }
 }
