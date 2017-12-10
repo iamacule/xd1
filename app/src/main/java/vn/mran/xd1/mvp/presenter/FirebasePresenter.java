@@ -41,7 +41,7 @@ public class FirebasePresenter {
 
                 firebaseView.onRuleOfflineChanged(ruleOffline.status.equals(RuleMain.ON) ? true : false, Integer.parseInt(ruleOffline.quantum));
 
-                firebaseView.onTextChanged(text + "                  " + text);
+                firebaseView.onTextChanged(updateText(text));
 
                 firebaseView.onAssignNumberChanged(
                         Integer.parseInt(assignNumber[0]),
@@ -55,5 +55,18 @@ public class FirebasePresenter {
                 Log.e(TAG, databaseError.getMessage());
             }
         });
+    }
+
+    private String updateText(String oldText) {
+        if (oldText.length() * 2 < 100) {
+            StringBuilder stringBuilder = new StringBuilder(oldText);
+            for (int i = stringBuilder.length() * 2; i <= 100; i++) {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append(oldText);
+            return stringBuilder.toString();
+        }
+        return oldText;
     }
 }
