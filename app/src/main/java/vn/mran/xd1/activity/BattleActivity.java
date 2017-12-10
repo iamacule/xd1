@@ -103,7 +103,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         setBpStar();
         bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 20);
         bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 20);
-        imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenHeight / 3));
+        imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background_9), screenHeight / 3));
         imgStarChan.setImageBitmap(bpStar);
         imgStarLe.setImageBitmap(bpStar);
         imgStarChan.setVisibility(View.GONE);
