@@ -34,10 +34,8 @@ public class DrawBattle extends View {
     private OnDrawBattleUpdate onDrawBattleUpdate;
 
     private Bitmap lid;
-    private Bitmap star;
 
     private Rect rectLid;
-    private Rect[] rectStar = new Rect[10];
     private int width;
     private int height;
 
@@ -60,7 +58,6 @@ public class DrawBattle extends View {
 
     private void init(Context context) {
         lid = BitmapFactory.decodeResource(context.getResources(), R.drawable.lid);
-        star = BitmapFactory.decodeResource(context.getResources(), R.drawable.star_flip);
         setFocusable(false);
         setFocusableInTouchMode(false);
     }
@@ -80,18 +77,10 @@ public class DrawBattle extends View {
         //Draw
         rectLid = new Rect(midPoint.x - lid.getWidth() / 2, midPoint.y - lid.getHeight() / 2, midPoint.x + lid.getWidth() / 2, midPoint.y + lid.getHeight() / 2);
         canvas.drawBitmap(lid, null, rectLid, null);
-
-        //Draw star
-        for (int i = 0; i < rectStar.length; i++) {
-            if (rectStar[i] != null) {
-                canvas.drawBitmap(star, null, rectStar[i], null);
-            }
-        }
     }
 
     public void setLidSize(int w) {
         lid = ResizeBitmap.resize(lid, w);
-        star = ResizeBitmap.resize(star, w / 7);
         invalidate();
     }
 
