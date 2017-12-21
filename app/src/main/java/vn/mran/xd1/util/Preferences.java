@@ -1,10 +1,10 @@
 package vn.mran.xd1.util;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+
+import vn.mran.xd1.helper.Log;
 
 /**
  * Created by Covisoft on 24/12/2015.
