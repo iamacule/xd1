@@ -115,7 +115,6 @@ public class Rules {
                     if (isNewResult) {
                         isNewResult = false;
                         numberOfRule = numberOfRule - 1;
-                        preferences.storeValue(PrefValue.NUMBER_OF_RULE, numberOfRule);
                     }
                 }
                 break;
@@ -123,7 +122,6 @@ public class Rules {
                 Log.d(TAG, "Number of rules offline : " + numberOfRuleOffline);
                 if (numberOfRuleOffline > 0) {
                     numberOfRuleOffline = numberOfRuleOffline - 1;
-                    preferences.storeValue(PrefValue.NUMBER_OF_RULE_OFFLINE, numberOfRuleOffline);
                 }
                 break;
 
@@ -131,7 +129,6 @@ public class Rules {
                 Log.d(TAG, "Number of main rules : " + numberOfMainRule);
                 if (numberOfMainRule > 0) {
                     numberOfMainRule = numberOfMainRule - 1;
-                    preferences.storeValue(PrefValue.NUMBER_OF_MAIN_RULE, numberOfMainRule);
                 }
                 break;
         }
