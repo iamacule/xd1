@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import vn.mran.xd1.constant.PrefValue;
@@ -25,10 +23,7 @@ public class BattlePresenter {
 
     private BattleView view;
 
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Future future;
-
-    private NetworkCheckingRunable networkCheckingRunable;
+    private NetworkCheckingThread networkCheckingThread;
 
     private boolean isNetworkEnable = false;
 
@@ -38,27 +33,12 @@ public class BattlePresenter {
         this.context = (Context) view;
         this.view = view;
         isNetworkEnable = isOnline();
-        executor = Executors.newFixedThreadPool(1);
-        networkCheckingRunable = new NetworkCheckingRunable();
-        future = executor.submit(networkCheckingRunable);
+        new NetworkCheckingThread().start();
     }
 
     public void stopCheckingNetwork() {
+        Log.d(TAG,"stopCheckingNetwork");
         run = false;
-        if (future != null && !future.isDone()) {
-            future.cancel(true);
-        }
-        executor.shutdown();
-        try {
-            if (!executor.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
-                executor.shutdownNow();
-                if (!executor.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
-                }
-            }
-        } catch (InterruptedException e) {
-            executor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
     }
 
     public void getResult(byte result) {
@@ -108,15 +88,16 @@ public class BattlePresenter {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private class NetworkCheckingRunable implements Runnable {
+    private class NetworkCheckingThread extends Thread {
         @Override
         public void run() {
-            while (run && Thread.currentThread().isAlive()) {
+            while (run) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG,"Checking Network");
                 if (isOnline()) {
                     if (!isNetworkEnable) {
                         isNetworkEnable = true;
