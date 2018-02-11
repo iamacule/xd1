@@ -97,7 +97,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         bpUp = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.up), screenWidth / 12);
         bpDown = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.down), screenWidth / 12);
         imgPlate.setImageBitmap(plate);
-        drawBattle.setLidSize(plate.getWidth() * 90 / 100);
+        drawBattle.setLidSize(plate.getWidth());
         drawParallaxStar.setStarSize(plate.getWidth() * 12 / 100);
 
         setBpStar();
