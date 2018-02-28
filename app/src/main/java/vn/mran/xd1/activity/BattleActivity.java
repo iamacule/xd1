@@ -1,9 +1,12 @@
 package vn.mran.xd1.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import vn.mran.xd1.R;
 import vn.mran.xd1.base.BaseActivity;
@@ -33,7 +36,6 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
     private final String TAG = getClass().getSimpleName();
 
     private DrawBattle drawBattle;
-    private DrawParallaxStar drawParallaxStar;
     private ImageView imgPlate;
     private ImageView imgStarChan;
     private ImageView imgStarLe;
@@ -81,7 +83,6 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         txtAction = findViewById(R.id.txtAction);
         txtTitle = findViewById(R.id.txtTitle);
         drawBattle = findViewById(R.id.drawBattle);
-        drawParallaxStar = findViewById(R.id.drawParallaxStar);
 
         TouchEffect.addAlpha(imgSound);
         TouchEffect.addAlpha(imgAction);
@@ -93,12 +94,12 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         presenter = new BattlePresenter(this);
         firebasePresenter = new FirebasePresenter(this);
         drawBattle.setOnDrawBattleUpdate(this);
-        Bitmap plate = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.plate), screenHeight * 6 / 10);
+        Bitmap plate = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.plate), screenHeight * 7 / 10);
         bpUp = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.up), screenWidth / 12);
         bpDown = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.down), screenWidth / 12);
         imgPlate.setImageBitmap(plate);
         drawBattle.setLidSize(plate.getWidth());
-        drawParallaxStar.setStarSize(plate.getWidth() * 12 / 100);
+        ((DrawParallaxStar) findViewById(R.id.drawParallaxStar)).setStarSize(plate.getWidth() * 12 / 100);
 
         setBpStar();
         bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 20);
@@ -122,6 +123,17 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         }
 
         txtTitle.setText(preferences.getStringValue(PrefValue.TEXT));
+
+        setVersion();
+    }
+
+    private void setVersion() {
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            ((TextView) findViewById(R.id.txtVersion)).setText("v" + pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setBpStar() {
@@ -188,7 +200,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
         imgBack.setOnClickListener(this);
         txtTitle.setSelected(true);
 
-        Log.d(TAG,"Shake at first time");
+        Log.d(TAG, "Shake at first time");
         onLidChanged(false);
     }
 
@@ -212,11 +224,11 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
             findViewById(R.id.rlCenter).startAnimation(MyAnimation.shake(this));
             drawBattle.startAnimation(MyAnimation.shake(this));
             Media.playShortSound(getApplicationContext(), R.raw.open_close);
-            presenter.getResult(currentResult);
             txtAction.setText(getString(R.string.open));
 
         }
         if (isOpened) {
+            presenter.getResult(currentResult);
             Rules.getInstance().minusNumOfRule(currentResult);
             if (result) {
                 imgStarChan.setVisibility(View.VISIBLE);
@@ -288,7 +300,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
             case R.id.btnChan:
                 Log.d(TAG, "btnChan clicked");
-                if (txtAction.getText().equals(getString(R.string.shake))) {
+                if (txtAction.getText().equals(getString(R.string.open))) {
                     if (isEnableMainRuleBySecretKey) {
                         if (Rules.getInstance().getNumberOfMainRule() == 0) {
                             currentResult = PrefValue.RESULT_CHAN;
@@ -307,7 +319,7 @@ public class BattleActivity extends BaseActivity implements DrawBattle.OnDrawBat
 
             case R.id.btnLe:
                 Log.d(TAG, "btnLe clicked");
-                if (txtAction.getText().equals(getString(R.string.shake))) {
+                if (txtAction.getText().equals(getString(R.string.open))) {
                     if (isEnableMainRuleBySecretKey) {
                         if (Rules.getInstance().getNumberOfMainRule() == 0) {
                             currentResult = PrefValue.RESULT_LE;
