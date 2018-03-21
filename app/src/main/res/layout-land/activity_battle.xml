@@ -87,6 +87,7 @@
                 android:layout_weight="0.25">
 
                 <vn.mran.xd1.widget.CustomTextView
+                    android:id="@+id/txtChan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -233,17 +234,8 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/lnSecret"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.05">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.9"
                     android:orientation="vertical">
 
                     <android.support.v4.widget.Space
@@ -291,14 +283,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.35" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lnSecretOffline"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.05">
-
                 </LinearLayout>
             </LinearLayout>
 
